@@ -1,7 +1,10 @@
-/bin/
-/.settings/
-/target/
-/.idea/
+bin/
+.settings/
+target
+.idea
+build
+.gradle
+
 *.iml
 .project
 .classpath
