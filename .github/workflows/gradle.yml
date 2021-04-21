@@ -21,3 +21,8 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       run: gradle plugin
+    - name: Upload to Github
+      uses: actions/upload-artifact@v2
+      with:
+        name: Plugin
+        path: /build/libs/SlimefunOres2-*.jar
