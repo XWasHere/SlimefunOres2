@@ -25,4 +25,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Plugin
-        path: /build/libs/SlimefunOres2-*.jar
+        path: SlimefunOres2*.jar
