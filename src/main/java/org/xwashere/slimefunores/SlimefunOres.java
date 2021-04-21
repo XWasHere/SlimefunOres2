@@ -14,56 +14,37 @@ import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 
 public class SlimefunOres extends JavaPlugin implements SlimefunAddon {
+    public static SlimefunItem coalOre;
+    public static SlimefunItem ironOre;
+    public static SlimefunItem goldOre;
+    public static SlimefunItem diamondOre;
+    public static SlimefunItem emeraldOre;
+    public static Category category;
+    public static JavaPlugin plugin;
 
-    @Override
     public void onEnable() {
-        // Read something from your config.yml
-        Config cfg = new Config(this);
+        this.setupSlimefunItems();
+        new ConfigSetup(this);
+        this.getServer().getPluginManager().registerEvents(new WorldListener(), this);
 
-        if (cfg.getBoolean("options.auto-update")) {
-            // You could start an Auto-Updater for example
-        }
-
-        /*
-         * 1. Creating a new Category
-         * This Category will use the following ItemStack
-         */
-        ItemStack categoryItem = new CustomItem(Material.DIAMOND, "&4Addon Category", "", "&a> Click to open");
-
-        // Give your Category a unique id.
-        NamespacedKey categoryId = new NamespacedKey(this, "addon_category");
-        Category category = new Category(categoryId, categoryItem);
-
-        /*
-         * 2. Create a new SlimefunItemStack
-         * This class has many constructors, it is very important
-         * that you give each item a unique id.
-         */
-        SlimefunItemStack slimefunItem = new SlimefunItemStack("COOL_DIAMOND", Material.DIAMOND, "&4Cool Diamond", "&c+20% Coolness");
-
-        /*
-         * 3. Creating a Recipe
-         * The Recipe is an ItemStack Array with a length of 9.
-         * It represents a Shaped Recipe in a 3x3 crafting grid.
-         * The machine in which this recipe is crafted in is specified
-         * further down as the RecipeType.
-         */
-        ItemStack[] recipe = { new ItemStack(Material.EMERALD), null, new ItemStack(Material.EMERALD), null, new ItemStack(Material.DIAMOND), null, new ItemStack(Material.EMERALD), null, new ItemStack(Material.EMERALD) };
-
-        /*
-         * 4. Registering the Item
-         * Now you just have to register the item.
-         * RecipeType.ENHANCED_CRAFTING_TABLE refers to the machine in
-         * which this item is crafted in.
-         * Recipe Types from Slimefun itself will automatically add the recipe to that machine.
-         */
-        SlimefunItem item = new SlimefunItem(category, slimefunItem, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
-        item.register(this);
+        this.getLogger().info("SlimefunOres " + this.getDescription().getVersion() + " has been enabled!");
     }
 
-    @Override
     public void onDisable() {
-        // Logic for disabling the plugin...
+        plugin = null;
+        this.getLogger().info("SlimefunOres has been disabled!");
+    }
+
+    private void setupSlimefunItems() {
+        NamespacedKey categoryId = new NamespacedKey(this, "slimefunores");
+        CustomItem categoryItem = new CustomItem(Material.GUNPOWDER, "Slimefun Ores");
+
+        category = new Category(categoryId, categoryItem);
+
+        ironOre = new SlimefunOre(category, new SlimefunItemStack("SF_IRON_ORE",new ItemStack(Material.IRON_ORE)), "SF_IRON_ORE", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[0], true);
+        goldOre = new SlimefunOre(category, new SlimefunItemStack("SF_GOLD_ORE", new ItemStack(Material.GOLD_ORE)), "SF_GOLD_ORE", RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[0], true);
+        ironOre.register(this);
+        goldOre.register(this);
     }
 
     @Override
