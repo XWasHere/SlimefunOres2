@@ -18,20 +18,24 @@ import java.util.ArrayList;
 public class WorldListener implements Listener {
     static Random random = new Random();
 
-    @EventHandler(priority= EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {
+        
+        // Lazy check for if it's cancelled.
+        if (e.isCancelled()) return;
+        
         Block b = e.getBlock();
         SlimefunItem slimefunItem = BlockStorage.check(b);
+        
         if (slimefunItem instanceof SlimefunOre) {
             BlockStorage.clearBlockInfo(b);
             return;
         }
+        
         if (e.getPlayer().getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
             return;
         }
-//        if (!CSCoreLib.getLib().getProtectionManager().canBuild(e.getPlayer().getUniqueId(), b)) {
-//            return;
-//        }
+        
         if (b.getType().toString().endsWith("_ORE")) {
             ItemStack dust = new ItemStack(Material.AIR);
             switch (b.getType()) {
